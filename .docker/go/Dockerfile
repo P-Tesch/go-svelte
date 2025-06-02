@@ -1,0 +1,17 @@
+FROM golang:1.24-alpine
+
+RUN apk add --no-cache curl
+
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b /usr/local/bin
+
+WORKDIR /var/www/html
+
+COPY ./backend ./backend
+COPY ./.env ./.env
+COPY ./go.mod ./go.mod
+COPY ./main.go ./main.go
+
+EXPOSE 8888
+
+# 8. Run with Air (hot reload)
+CMD ["air"]

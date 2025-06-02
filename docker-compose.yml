@@ -1,0 +1,48 @@
+services:
+    go:
+        container_name: app
+        build:
+            context: ./src
+            dockerfile: ./.docker/go/Dockerfile
+        volumes:
+            - ./src/backend:/var/www/html/backend
+            - ./src/go.mod:/var/www/html/go.mod
+            - ./src/main.go:/var/www/html/main.go
+            - ./src/.env:/var/www/html/.env
+        ports:
+            - "8888:8888"
+        networks:
+            - main_network
+        depends_on:
+            - mongodb
+
+    svelte:
+        container_name: svelte
+        build:
+            context: ./src/frontend
+            dockerfile: ./.docker/svelte/Dockerfile
+        volumes:
+            - ./src/frontend:/var/www/html
+        networks:
+            - main_network
+        depends_on:
+            - mongodb
+
+    mongodb:
+        container_name: mongodb
+        image: mongodb/mongodb-community-server:7.0.9-ubi9
+        networks:
+            - main_network
+        volumes:
+            - 'mongodb:/data/db'
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: pass
+
+networks:
+    main_network:
+        driver: bridge
+
+volumes:
+    mongodb:
+        driver: local

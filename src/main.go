@@ -27,7 +27,7 @@ func main() {
 }
 
 func devFrontend() {
-	target, _ := url.Parse("http://localhost:5173")
+	target, _ := url.Parse("http://svelte:5173")
 
 	proxy := httputil.NewSingleHostReverseProxy(target)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
