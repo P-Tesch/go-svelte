@@ -21,6 +21,7 @@ services:
             dockerfile: ./.docker/svelte/Dockerfile
         volumes:
             - ./src/frontend/:/var/www/html
+            - /var/www/html/node_modules
         networks:
             - main_network
         depends_on:

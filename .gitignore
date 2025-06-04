@@ -29,6 +29,7 @@ go.work.sum
 
 # Air temp folder
 tmp/
+package-lock.json
 
 # Editor/IDE
 # .idea/
