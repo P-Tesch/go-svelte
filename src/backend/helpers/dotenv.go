@@ -1,4 +1,4 @@
-package dotenv
+package helpers
 
 import (
 	"os"
@@ -7,7 +7,7 @@ import (
 
 var variables = make(map[string]string)
 
-func GetVar(name string) string {
+func GetEnvVar(name string) string {
 	if len(variables) == 0 {
 		setup()
 	}
@@ -27,7 +27,7 @@ func setup() {
 		panic(err.Error())
 	}
 
-	reg := regexp.MustCompile("(?P<key>.*)=(?P<value>.*)")
+	reg := regexp.MustCompile("(?m)^(?P<key>.*)=\"(?P<value>.*)\"$")
 
 	matches := reg.FindAllStringSubmatch(string(file), -1)
 

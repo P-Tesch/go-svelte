@@ -6,11 +6,11 @@ import (
 	"net/http/httputil"
 	"net/url"
 
-	"github.com/P-Tesch/go-svelte/backend/helpers/dotenv"
+	"github.com/P-Tesch/go-svelte/backend/helpers"
 )
 
 func RegisterFrontRoutes() {
-	env := dotenv.GetVar("ENVIROMENT")
+	env := helpers.GetEnvVar("ENVIROMENT")
 
 	if env == "dev" {
 		fmt.Println("Serving dev server on port 8888")

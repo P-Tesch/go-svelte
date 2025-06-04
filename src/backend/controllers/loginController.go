@@ -10,12 +10,8 @@ import (
 	"time"
 
 	"github.com/P-Tesch/go-svelte/backend/helpers"
+	"github.com/P-Tesch/go-svelte/backend/models"
 )
-
-type User struct {
-	Username string
-	Password string
-}
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	if !helpers.ValidateMethod(w, r, "POST") {
@@ -25,16 +21,20 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	jsonBody, err := io.ReadAll(r.Body)
 	helpers.HandleError(err)
 
-	var body User
-	err = json.Unmarshal(jsonBody, &body)
+	var user models.User
+	err = json.Unmarshal(jsonBody, &user)
 	helpers.HandleError(err)
 
-	// TODO: Register user in DB
+	if user.FindByUsername() {
+		w.WriteHeader(http.StatusConflict)
+		w.Write([]byte("Username already taken"))
+		return
+	}
 
-	//
+	user.Save()
 
 	responseBody := make(map[string]string)
-	token := fmt.Sprintf("%x", sha256.Sum256([]byte(body.Username+strconv.FormatInt(time.Now().Unix(), 10))))
+	token := fmt.Sprintf("%x", sha256.Sum256([]byte(user.Username+strconv.FormatInt(time.Now().Unix(), 10))))
 	responseBody["token"] = token
 
 	rBodyJson, err := json.Marshal(responseBody)
@@ -49,13 +49,23 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, pass, _ := r.BasicAuth()
-	body := User{user, pass}
+	username, pass, _ := r.BasicAuth()
+	user := models.User{Username: username, Password: pass}
 
-	// TODO: Check user in DB
+	if !user.FindByUsername() {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.Write([]byte("Incorrect username or password"))
+		return
+	}
+
+	if fmt.Sprintf("%x", sha256.Sum256([]byte(user.Password))) != user.Password {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.Write([]byte("Incorrect username or password"))
+		return
+	}
 
 	responseBody := make(map[string]string)
-	token := fmt.Sprintf("%x", sha256.Sum256([]byte(body.Username+strconv.FormatInt(time.Now().Unix(), 10))))
+	token := fmt.Sprintf("%x", sha256.Sum256([]byte(user.Username+strconv.FormatInt(time.Now().Unix(), 10))))
 	responseBody["token"] = token
 
 	rBodyJson, err := json.Marshal(responseBody)
