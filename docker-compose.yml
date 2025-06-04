@@ -1,14 +1,12 @@
 services:
     go:
-        container_name: app
+        container_name: go
         build:
-            context: ./src
+            context: .
             dockerfile: ./.docker/go/Dockerfile
         volumes:
-            - ./src/backend:/var/www/html/backend
-            - ./src/go.mod:/var/www/html/go.mod
-            - ./src/main.go:/var/www/html/main.go
-            - ./src/.env:/var/www/html/.env
+            - ./src:/var/www/html
+            - /var/www/html/frontend
         ports:
             - "8888:8888"
         networks:
@@ -19,10 +17,10 @@ services:
     svelte:
         container_name: svelte
         build:
-            context: ./src/frontend
+            context: .
             dockerfile: ./.docker/svelte/Dockerfile
         volumes:
-            - ./src/frontend:/var/www/html
+            - ./src/frontend/:/var/www/html
         networks:
             - main_network
         depends_on:

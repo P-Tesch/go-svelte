@@ -6,11 +6,6 @@ RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh 
 
 WORKDIR /var/www/html
 
-COPY ./backend ./backend
-COPY ./.env ./.env
-COPY ./go.mod ./go.mod
-COPY ./main.go ./main.go
-
 EXPOSE 8888
 
 # 8. Run with Air (hot reload)

@@ -22,7 +22,7 @@ func GetVar(name string) string {
 }
 
 func setup() {
-	file, err := os.ReadFile("./../.env")
+	file, err := os.ReadFile("./.env")
 	if err != nil {
 		panic(err.Error())
 	}

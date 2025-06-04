@@ -2,12 +2,10 @@ FROM node:22-alpine
 
 WORKDIR /var/www/html
 
-COPY package*.json ./
-RUN npm install
+COPY ./src/frontend/package.json /var/www/html/package.json
 
-# Copy source and build
-COPY . .
+RUN npm install
 
 EXPOSE 5173
 
-RUN npm run dev
+CMD [ "npm", "run", "dev" ]
