@@ -29,7 +29,7 @@ services:
 
     mongodb:
         container_name: mongodb
-        image: mongodb/mongodb-community-server:7.0.9-ubi9
+        image: mongodb/mongodb-community-server:8.0-ubi9
         networks:
             - main_network
         volumes:
