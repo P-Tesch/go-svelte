@@ -66,6 +66,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	responseBody := make(map[string]string)
 	token := fmt.Sprintf("%x", sha256.Sum256([]byte(user.Username+strconv.FormatInt(time.Now().Unix(), 10))))
+
+	user.Token = token
+	user.Save()
+
 	responseBody["token"] = token
 
 	rBodyJson, err := json.Marshal(responseBody)

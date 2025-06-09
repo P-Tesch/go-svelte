@@ -7,6 +7,7 @@ import (
 	"net/url"
 
 	"github.com/P-Tesch/go-svelte/backend/helpers"
+	"github.com/P-Tesch/go-svelte/backend/middleware"
 )
 
 func RegisterFrontRoutes() {
@@ -25,7 +26,15 @@ func devFrontend() {
 	target, _ := url.Parse("http://svelte:5173")
 
 	proxy := httputil.NewSingleHostReverseProxy(target)
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		proxy.ServeHTTP(w, r)
+	})
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if !middleware.Default(w, r) {
+			return
+		}
+
 		proxy.ServeHTTP(w, r)
 	})
 }
@@ -35,6 +44,10 @@ func prodFrontend() {
 	http.Handle("/", fs)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if !middleware.Default(w, r) {
+			return
+		}
+
 		http.ServeFile(w, r, "./dist/index.html")
 	})
 }

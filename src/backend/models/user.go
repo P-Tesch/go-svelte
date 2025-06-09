@@ -14,6 +14,7 @@ type User struct {
 	_id      *bson.ObjectID
 	Username string
 	Password string
+	Token    string
 }
 
 func (user User) FindById() bool {
@@ -25,6 +26,22 @@ func (user User) FindById() bool {
 
 func (user User) FindByUsername() bool {
 	result, err := coll.Find(context.TODO(), bson.D{{Key: "Username", Value: user.Username}})
+	helpers.HandleError(err)
+
+	var users []User
+	err = result.All(context.TODO(), &users)
+	helpers.HandleError(err)
+
+	if len(users) == 0 {
+		return false
+	}
+
+	user = users[0]
+	return true
+}
+
+func (user User) FindByToken() bool {
+	result, err := coll.Find(context.TODO(), bson.D{{Key: "Token", Value: user.Token}})
 	helpers.HandleError(err)
 
 	var users []User
