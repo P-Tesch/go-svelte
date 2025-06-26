@@ -11,21 +11,21 @@ import (
 var coll = database.GetDatabase().Collection("users")
 
 type User struct {
-	_id      *bson.ObjectID
-	Username string
-	Password string
-	Token    string
+	Id       *bson.ObjectID `bson:"_id,omitempty"`
+	Username string         `bson:"username"`
+	Password string         `bson:"password"`
+	Token    string         `bson:"token"`
 }
 
-func (user User) FindById() bool {
-	result := coll.FindOne(context.TODO(), bson.D{{Key: "_id", Value: user._id}})
+func (user *User) FindById() bool {
+	result := coll.FindOne(context.TODO(), bson.D{{Key: "id", Value: user.Id}})
 	err := result.Decode(user)
 	helpers.HandleError(err)
 	return true
 }
 
-func (user User) FindByUsername() bool {
-	result, err := coll.Find(context.TODO(), bson.D{{Key: "Username", Value: user.Username}})
+func (user *User) FindByUsername() bool {
+	result, err := coll.Find(context.TODO(), bson.D{{Key: "username", Value: user.Username}})
 	helpers.HandleError(err)
 
 	var users []User
@@ -36,12 +36,12 @@ func (user User) FindByUsername() bool {
 		return false
 	}
 
-	user = users[0]
+	*user = users[0]
 	return true
 }
 
-func (user User) FindByToken() bool {
-	result, err := coll.Find(context.TODO(), bson.D{{Key: "Token", Value: user.Token}})
+func (user *User) FindByToken() bool {
+	result, err := coll.Find(context.TODO(), bson.D{{Key: "token", Value: user.Token}})
 	helpers.HandleError(err)
 
 	var users []User
@@ -52,22 +52,22 @@ func (user User) FindByToken() bool {
 		return false
 	}
 
-	user = users[0]
+	*user = users[0]
 	return true
 }
 
-func (user User) Save() interface{} {
-	if &user._id != nil {
+func (user *User) Save() interface{} {
+	if user.Id == nil {
 		result, err := coll.InsertOne(context.TODO(), user)
 		helpers.HandleError(err)
 
 		return result.InsertedID
 	}
 
-	_, err := coll.UpdateByID(context.TODO(), user._id, user)
+	_, err := coll.UpdateByID(context.TODO(), user.Id, bson.M{"$set": user})
 	helpers.HandleError(err)
 
-	return user._id
+	return user.Id
 }
 
 func (user User) Delete() bool {

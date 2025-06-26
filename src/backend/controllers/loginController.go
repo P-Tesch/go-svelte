@@ -31,11 +31,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user.Save()
-
 	responseBody := make(map[string]string)
 	token := fmt.Sprintf("%x", sha256.Sum256([]byte(user.Username+strconv.FormatInt(time.Now().Unix(), 10))))
 	responseBody["token"] = token
+	user.Token = token
+
+	user.Save()
 
 	rBodyJson, err := json.Marshal(responseBody)
 	helpers.HandleError(err)
@@ -50,17 +51,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	username, pass, _ := r.BasicAuth()
-	user := models.User{Username: username, Password: pass}
+	user := models.User{Username: username}
 
 	if !user.FindByUsername() {
 		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write([]byte("Incorrect username or password"))
+		resp, _ := json.Marshal(map[string]string{"error": "Incorrect username or password"})
+		w.Write([]byte(resp))
 		return
 	}
 
-	if fmt.Sprintf("%x", sha256.Sum256([]byte(user.Password))) != user.Password {
+	if user.Password != pass {
 		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write([]byte("Incorrect username or password"))
+		resp, _ := json.Marshal(map[string]string{"error": "Incorrect username or password"})
+		w.Write([]byte(resp))
 		return
 	}
 

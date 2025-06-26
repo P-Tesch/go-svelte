@@ -2,3 +2,9 @@
 @plugin "daisyui" {
     themes: dim --default;
 }
+@plugin "daisyui/theme" {
+    name: "dim";
+    default: true;
+
+    /* --color-secondary: teal; */
+}

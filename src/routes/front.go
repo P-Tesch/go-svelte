@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 
 	"github.com/P-Tesch/go-svelte/backend/helpers"
 	"github.com/P-Tesch/go-svelte/backend/middleware"
@@ -26,12 +27,10 @@ func devFrontend() {
 	target, _ := url.Parse("http://svelte:5173")
 
 	proxy := httputil.NewSingleHostReverseProxy(target)
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		proxy.ServeHTTP(w, r)
-	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if !middleware.Default(w, r) {
+		if strings.HasPrefix(r.URL.Path, "/@vite") || strings.EqualFold(r.Header.Get("Upgrade"), "websocket") {
+			proxy.ServeHTTP(w, r)
 			return
 		}
 
