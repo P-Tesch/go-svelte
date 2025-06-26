@@ -15,18 +15,19 @@
 
         fetch("/api/login", {
             method: "GET",
+            redirect: "manual",
             headers: {
                 Authorization: "Basic " + btoa(username + ":" + password)
             }
         })
-        .then(async (response) => {
+        .then((response) => {
             if (response.status === 200) {
-                const token = (await response.json()).token;
+                window.location.href = "/";
                 return;
             }
             console.log(response);
         })
-        .catch(async (error: Response) => console.log(error));
+        .catch((error: Response) => console.log(error));
     }
 
     function register(): void {

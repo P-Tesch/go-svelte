@@ -67,16 +67,20 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseBody := make(map[string]string)
 	token := fmt.Sprintf("%x", sha256.Sum256([]byte(user.Username+strconv.FormatInt(time.Now().Unix(), 10))))
 
 	user.Token = token
 	user.Save()
 
-	responseBody["token"] = token
+	cookie := http.Cookie{
+		Name:     "AuthToken",
+		Value:    token,
+		MaxAge:   0,
+		HttpOnly: true,
+		Secure:   false,
+		SameSite: http.SameSiteDefaultMode,
+	}
 
-	rBodyJson, err := json.Marshal(responseBody)
-	helpers.HandleError(err)
-
-	w.Write(rBodyJson)
+	http.SetCookie(w, &cookie)
+	w.WriteHeader(http.StatusOK)
 }
