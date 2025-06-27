@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/P-Tesch/go-svelte/backend/global"
 	"github.com/P-Tesch/go-svelte/backend/models"
 )
 
@@ -20,6 +21,7 @@ func authenticate(w http.ResponseWriter, r *http.Request) bool {
 		w.Write([]byte(resp))
 		return false
 	}
+	global.User = &user
 
 	return true
 }

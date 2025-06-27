@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-var coll = database.GetDatabase().Collection("users")
+var userColl = database.GetDatabase().Collection("users")
 
 type User struct {
 	Id       *bson.ObjectID `bson:"_id,omitempty"`
@@ -18,14 +18,14 @@ type User struct {
 }
 
 func (user *User) FindById() bool {
-	result := coll.FindOne(context.TODO(), bson.D{{Key: "id", Value: user.Id}})
+	result := userColl.FindOne(context.TODO(), bson.D{{Key: "id", Value: user.Id}})
 	err := result.Decode(user)
 	helpers.HandleError(err)
 	return true
 }
 
 func (user *User) FindByUsername() bool {
-	result, err := coll.Find(context.TODO(), bson.D{{Key: "username", Value: user.Username}})
+	result, err := userColl.Find(context.TODO(), bson.D{{Key: "username", Value: user.Username}})
 	helpers.HandleError(err)
 
 	var users []User
@@ -41,7 +41,7 @@ func (user *User) FindByUsername() bool {
 }
 
 func (user *User) FindByToken() bool {
-	result, err := coll.Find(context.TODO(), bson.D{{Key: "token", Value: user.Token}})
+	result, err := userColl.Find(context.TODO(), bson.D{{Key: "token", Value: user.Token}})
 	helpers.HandleError(err)
 
 	var users []User
@@ -58,13 +58,13 @@ func (user *User) FindByToken() bool {
 
 func (user *User) Save() interface{} {
 	if user.Id == nil {
-		result, err := coll.InsertOne(context.TODO(), user)
+		result, err := userColl.InsertOne(context.TODO(), user)
 		helpers.HandleError(err)
 
 		return result.InsertedID
 	}
 
-	_, err := coll.UpdateByID(context.TODO(), user.Id, bson.M{"$set": user})
+	_, err := userColl.UpdateByID(context.TODO(), user.Id, bson.M{"$set": user})
 	helpers.HandleError(err)
 
 	return user.Id

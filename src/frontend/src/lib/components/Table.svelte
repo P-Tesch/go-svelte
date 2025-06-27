@@ -1,7 +1,10 @@
 <script lang="ts">
     let { entities }: {entities: Array<any>} = $props();
+    let headers: string[] = $state([]);
 
-    const headers = Object.getOwnPropertyNames(entities[0]);
+    if (entities.length > 0) {
+        headers = Object.getOwnPropertyNames(entities[0]);
+    }
 </script>
 
 <div class="w-[92vw] h-[88vh] ml-[1.25vw] mr-[1.25vw] mt-[2.5vh] mb-[2.5vh] bg-base-200 rounded-box border-base-content/5">

@@ -9,4 +9,5 @@ import (
 func RegisterAPIRoutes() {
 	http.HandleFunc("/api/register", controllers.Register)
 	http.HandleFunc("/api/login", controllers.Login)
+	http.HandleFunc("/api/transactions", controllers.Index)
 }

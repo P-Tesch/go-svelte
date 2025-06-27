@@ -29,8 +29,13 @@ func devFrontend() {
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/@vite") || strings.EqualFold(r.Header.Get("Upgrade"), "websocket") {
+		if strings.HasPrefix(r.URL.Path, "/@") || strings.HasPrefix(r.URL.Path, "/.") || strings.HasPrefix(r.URL.Path, "/node_modules") || strings.HasPrefix(r.URL.Path, "/src") || strings.EqualFold(r.Header.Get("Upgrade"), "websocket") {
 			proxy.ServeHTTP(w, r)
+			return
+		}
+
+		if r.URL.Path != "/login" && !middleware.Default(w, r) {
+			http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
 			return
 		}
 
