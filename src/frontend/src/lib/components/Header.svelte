@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+     import { onMount } from "svelte";
 
     let navOpen = $state(false);
 
@@ -13,13 +13,13 @@
     }
 </script>
 
-<div class="w-[100vw] h-16 bg-base-300 left-0 top-0 flex flex-row z-50">
+<div class="w-[100vw] h-16 bg-base-300 left-0 top-0 flex flex-row z-40">
     <a href="/" class="flex flex-row h-full items-center ml-3 text-2xl">
         <img src="favicon.png" class="h-full pt-2 pb-2 pr-2" alt="logo"/>
         <strong>Lorem Ipsum</strong>
     </a>
 </div>
-<div class="{navOpen ? "w-64" : "w-20"} h-[100vh] bg-base-300 right-0 left-auto absolute z-40" style="transition: width 0.3s ease;">
+<div class="{navOpen ? "w-64" : "w-20"} h-[100vh] bg-base-300 right-0 left-auto top-2 absolute z-50" style="transition: width 0.3s ease;">
     <button onclick="{toggleNav}" class="cursor-pointer w-full mt-2 flex items-center justify-end pr-5 mb-8">
         <h2 class="text-2xl mr-2 {navOpen ? "" : "hidden"}">Ocultar</h2>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">

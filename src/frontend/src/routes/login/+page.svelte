@@ -16,6 +16,7 @@
         fetch("/api/login", {
             method: "GET",
             redirect: "manual",
+            credentials: "include",
             headers: {
                 Authorization: "Basic " + btoa(username + ":" + password)
             }

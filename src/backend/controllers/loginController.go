@@ -79,6 +79,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 		Secure:   false,
 		SameSite: http.SameSiteDefaultMode,
+		Path:     "/",
 	}
 
 	http.SetCookie(w, &cookie)
