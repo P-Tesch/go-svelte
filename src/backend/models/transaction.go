@@ -28,6 +28,7 @@ const (
 type Transaction struct {
 	Id      *bson.ObjectID    `bson:"_id,omitempty"`
 	Owner   User              `bson:"owner"`
+	Name    string            `bson:"name"`
 	Type    TransactionType   `bson:"type"`
 	Value   uint32            `bson:"value"`
 	DueDate bson.DateTime     `bson:"due_date"`
@@ -35,6 +36,7 @@ type Transaction struct {
 }
 
 type TransactionDTO struct {
+	Name    string
 	Type    uint8
 	Value   uint32
 	DueDate string

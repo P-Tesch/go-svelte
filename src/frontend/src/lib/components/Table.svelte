@@ -1,9 +1,9 @@
 <script lang="ts">
-    import type Modal from "$lib/types/Modal.js";
+    import BaseAddModal from "$lib/components/modals/add/BaseAddModal.svelte";
 
     interface Props {
         entities: Array<any>,
-        modal: Modal,
+        modal: BaseAddModal,
         label: string
     }
 

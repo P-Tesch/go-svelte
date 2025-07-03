@@ -1,12 +1,12 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
+    import BaseAddModal from "$lib/components/modals/add/BaseAddModal.svelte";
     import TransactionAddModal from "$lib/components/modals/add/TransactionAddModal.svelte";
     import Table from "$lib/components/Table.svelte";
-    import type Modal from "$lib/types/Modal.js";
     import type Transaction from "$lib/types/Transaction.js";
 
     let entities: Transaction[] = [];
-    let modal: Modal;
+    let modal: BaseAddModal;
 
     fetch("/api/transactions", {
         method: "GET",
