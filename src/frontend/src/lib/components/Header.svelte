@@ -16,7 +16,7 @@
 <div class="w-[100vw] h-16 bg-base-300 left-0 top-0 flex flex-row z-40">
     <a href="/" class="flex flex-row h-full items-center ml-3 text-2xl">
         <img src="favicon.png" class="h-full pt-2 pb-2 pr-2" alt="logo"/>
-        <strong>Lorem Ipsum</strong>
+        <strong>Velt</strong>
     </a>
 </div>
 <div class="{navOpen ? "w-64" : "w-20"} h-[100vh] bg-base-300 right-0 left-auto top-2 absolute z-50" style="transition: width 0.3s ease;">

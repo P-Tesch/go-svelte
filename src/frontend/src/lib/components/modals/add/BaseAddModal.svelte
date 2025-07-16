@@ -3,10 +3,11 @@
 
     interface Props {
         children: Snippet,
-        dialog: HTMLDialogElement
+        dialog: HTMLDialogElement,
+        entity: string,
     }
 
-    let {children, dialog = $bindable()}: Props = $props();
+    let {children, dialog = $bindable(), entity = $bindable()}: Props = $props();
 
     export function showModal(): void {
         dialog.showModal();
@@ -15,10 +16,18 @@
 
 <dialog bind:this={dialog} class="modal">
     <div class="modal-box">
-        {@render children()}
+        <div class="flex flex-row justify-between">
+            <h3 class="text-lg font-bold">Adicionar {entity}</h3>
+            <button aria-label="close">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
         <div class="modal-action">
-            <form method="dialog">
-                <button class="btn">Close</button>
+            <form method="dialog" class="w-full">
+                {@render children()}
+                <button class="btn mt-5">Salvar</button>
             </form>
         </div>
     </div>

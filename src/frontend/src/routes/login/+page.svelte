@@ -1,6 +1,10 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
     let username: string | undefined = $state();
     let password: string | undefined = $state();
+
+    onMount(() => window.addEventListener("keyup", (event: KeyboardEvent) => {if (event.key === "Enter") {login();}}));
 
     function login(): void {
         if (username === undefined) {
@@ -49,7 +53,7 @@
 
 <div class="flex h-[100vh] w-[100vw] justify-center flex-col">
     <fieldset class="fieldset bg-base-200 rounded-box w-md flex flex-col ml-auto mr-auto p-10 gap-5">
-        <h1 class="text-3xl text-center -mt-5">Lorem ipsum</h1>
+        <h1 class="text-3xl text-center -mt-5">Velt</h1>
         <label class="input w-[100%]">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
