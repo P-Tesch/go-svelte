@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-var installColl = database.GetDatabase().Collection("installment")
+var installColl = database.GetDatabase().Collection("installments")
 
 // TODO
 type Installment struct {

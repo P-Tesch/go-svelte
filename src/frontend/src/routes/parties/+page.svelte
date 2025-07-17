@@ -1,16 +1,16 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
     import BaseAddModal from "$lib/components/modals/add/BaseAddModal.svelte";
-    import TransactionAddModal from "$lib/components/modals/add/TransactionAddModal.svelte";
+    import PartyAddModal from "$lib/components/modals/add/PartyAddModal.svelte";
     import Table from "$lib/components/Table.svelte";
-    import type Transaction from "$lib/types/Transaction.js";
+    import type Party from "$lib/types/Party.js";
     import { onMount } from "svelte";
 
-    let entities: Transaction[] = [];
+    let entities: Party[] = [];
     let modal: BaseAddModal;
 
     onMount(() => {
-        fetch("/api/transactions", {
+        fetch("/api/parties", {
             method: "GET",
         })
         .then(async (response: Response) => {
@@ -22,9 +22,8 @@
         })
         .catch((error) => console.log(error));
     });
-
 </script>
 
 <Header />
-<Table entities="{entities}" modal="{modal}" label="Transações"/>
-<TransactionAddModal bind:modal="{modal}" />
+<Table entities="{entities}" modal="{modal}" label="Partes"/>
+<PartyAddModal bind:modal="{modal}" />

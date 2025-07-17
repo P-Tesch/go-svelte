@@ -25,7 +25,7 @@
             <h2 class="text-xl">{label}</h2>
         </div>
         <div class="flex h-full gap-2 justify-end">
-            <button onclick="{add}" aria-label="add" class="cursor-pointer">
+            <button onclick="{add}" aria-label="add" class="cursor-pointer z-10">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
@@ -33,7 +33,7 @@
         </div>
     </div>
     <div>
-        {#if entities?.length === 0}
+        {#if entities === null || entities?.length === 0}
             <h1>Nenhum valor encontrado</h1>
         {:else}
             <table class="table table-zebra">
