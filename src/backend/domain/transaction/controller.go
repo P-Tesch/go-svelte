@@ -1,4 +1,4 @@
-package controllers
+package transaction
 
 import (
 	"encoding/json"
@@ -6,13 +6,12 @@ import (
 
 	"github.com/P-Tesch/go-svelte/backend/global"
 	"github.com/P-Tesch/go-svelte/backend/helpers"
-	"github.com/P-Tesch/go-svelte/backend/models"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	var result []models.TransactionDTO
+	var result []TransactionDTO
 
-	transactions := models.FindTransactionsByOwner(*global.User)
+	transactions := FindTransactionsByOwner(*global.User)
 	for _, transaction := range transactions {
 		result = append(result, transaction.CreateDTO())
 	}

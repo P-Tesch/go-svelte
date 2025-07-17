@@ -1,20 +1,28 @@
-package models
+package party
 
 import (
 	"context"
 
 	"github.com/P-Tesch/go-svelte/backend/database"
+	"github.com/P-Tesch/go-svelte/backend/domain/user"
 	"github.com/P-Tesch/go-svelte/backend/helpers"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 var partyColl = database.GetDatabase().Collection("parties")
 
+type PartyType int
+
+const (
+	Income PartyType = iota
+	Outgoing
+)
+
 type Party struct {
-	Id    *bson.ObjectID  `bson:"_id,omitempty"`
-	Owner User            `bson:"owner"`
-	Name  string          `bson:"name"`
-	Type  TransactionType `bson:"type"`
+	Id    *bson.ObjectID `bson:"_id,omitempty"`
+	Owner user.User      `bson:"owner"`
+	Name  string         `bson:"name"`
+	Type  PartyType      `bson:"type"`
 }
 
 type PartyDTO struct {
@@ -48,18 +56,18 @@ func (party Party) Delete() bool {
 	return false
 }
 
-func (party Party) CreateDTO() InstallmentDTO {
-	return InstallmentDTO{
+func (party Party) CreateDTO() PartyDTO {
+	return PartyDTO{
 		Type: uint8(party.Type),
 		Name: party.Name,
 	}
 }
 
-func FindPartiesByOwner(owner User) []Installment {
+func FindPartiesByOwner(owner user.User) []Party {
 	result, err := partyColl.Find(context.TODO(), bson.D{{Key: "owner", Value: owner}})
 	helpers.HandleError(err)
 
-	var parties []Installment
+	var parties []Party
 	result.All(context.TODO(), parties)
 	return parties
 }

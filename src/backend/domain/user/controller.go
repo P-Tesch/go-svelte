@@ -1,4 +1,4 @@
-package controllers
+package user
 
 import (
 	"crypto/sha256"
@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/P-Tesch/go-svelte/backend/helpers"
-	"github.com/P-Tesch/go-svelte/backend/models"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +20,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	jsonBody, err := io.ReadAll(r.Body)
 	helpers.HandleError(err)
 
-	var user models.User
+	var user User
 	err = json.Unmarshal(jsonBody, &user)
 	helpers.HandleError(err)
 
@@ -51,7 +50,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	username, pass, _ := r.BasicAuth()
-	user := models.User{Username: username}
+	user := User{Username: username}
 
 	if !user.FindByUsername() {
 		w.WriteHeader(http.StatusUnprocessableEntity)

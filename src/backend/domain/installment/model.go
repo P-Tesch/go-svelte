@@ -1,7 +1,8 @@
-package models
+package installment
 
 import (
 	"context"
+	"os/user"
 	"time"
 
 	"github.com/P-Tesch/go-svelte/backend/database"
@@ -13,13 +14,11 @@ var installColl = database.GetDatabase().Collection("installments")
 
 // TODO
 type Installment struct {
-	Id      *bson.ObjectID    `bson:"_id,omitempty"`
-	Owner   User              `bson:"owner"`
-	Name    string            `bson:"name"`
-	Type    TransactionType   `bson:"type"`
-	Value   uint32            `bson:"value"`
-	DueDate bson.DateTime     `bson:"due_date"`
-	Status  TransactionStatus `bson:"status"`
+	Id      *bson.ObjectID `bson:"_id,omitempty"`
+	Owner   user.User      `bson:"owner"`
+	Name    string         `bson:"name"`
+	Value   uint32         `bson:"value"`
+	DueDate bson.DateTime  `bson:"due_date"`
 }
 
 type InstallmentDTO struct {
@@ -58,14 +57,12 @@ func (installment Installment) Delete() bool {
 
 func (installment Installment) CreateDTO() InstallmentDTO {
 	return InstallmentDTO{
-		Type:    uint8(installment.Type),
 		Value:   installment.Value,
 		DueDate: installment.DueDate.Time().Format(time.DateOnly),
-		Status:  uint8(installment.Status),
 	}
 }
 
-func FindInstallmentsByOwner(owner User) []Installment {
+func FindInstallmentsByOwner(owner user.User) []Installment {
 	result, err := installColl.Find(context.TODO(), bson.D{{Key: "owner", Value: owner}})
 	helpers.HandleError(err)
 

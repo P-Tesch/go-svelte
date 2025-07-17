@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/P-Tesch/go-svelte/backend/domain/user"
 	"github.com/P-Tesch/go-svelte/backend/global"
-	"github.com/P-Tesch/go-svelte/backend/models"
 )
 
 func authenticate(w http.ResponseWriter, r *http.Request) bool {
@@ -14,7 +14,7 @@ func authenticate(w http.ResponseWriter, r *http.Request) bool {
 		return false
 	}
 
-	user := models.User{Token: token.Value}
+	user := user.User{Token: token.Value}
 	if !user.FindByToken() {
 		w.WriteHeader(http.StatusUnauthorized)
 		resp, _ := json.Marshal(map[string]string{"error": "Invalid auth token"})

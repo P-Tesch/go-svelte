@@ -1,10 +1,11 @@
-package models
+package transaction
 
 import (
 	"context"
 	"time"
 
 	"github.com/P-Tesch/go-svelte/backend/database"
+	"github.com/P-Tesch/go-svelte/backend/domain/user"
 	"github.com/P-Tesch/go-svelte/backend/helpers"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
@@ -27,7 +28,7 @@ const (
 
 type Transaction struct {
 	Id      *bson.ObjectID    `bson:"_id,omitempty"`
-	Owner   User              `bson:"owner"`
+	Owner   user.User         `bson:"owner"`
 	Name    string            `bson:"name"`
 	Type    TransactionType   `bson:"type"`
 	Value   uint32            `bson:"value"`
@@ -78,7 +79,7 @@ func (transaction Transaction) CreateDTO() TransactionDTO {
 	}
 }
 
-func FindTransactionsByOwner(owner User) []Transaction {
+func FindTransactionsByOwner(owner user.User) []Transaction {
 	result, err := transColl.Find(context.TODO(), bson.D{{Key: "owner", Value: owner}})
 	helpers.HandleError(err)
 

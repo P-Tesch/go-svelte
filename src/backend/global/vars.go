@@ -1,5 +1,7 @@
 package global
 
-import "github.com/P-Tesch/go-svelte/backend/models"
+import (
+	"github.com/P-Tesch/go-svelte/backend/domain/user"
+)
 
-var User *models.User
+var User *user.User
